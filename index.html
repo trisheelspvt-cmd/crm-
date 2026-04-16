@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZORO NORO | CRM Case Studies</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --acer-green: #7fb432;
+            --text-dark: #222222;
+            --text-light: #555555;
+            --bg-light: #f5f5f5;
+            --white: #ffffff;
+            --font-primary: 'Open Sans', Helvetica, Arial, sans-serif;
+            --font-heading: 'Montserrat', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-primary);
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+        }
+
+        /* NAVBAR */
+        .acer-nav { background-color: var(--white); box-shadow: 0 2px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000; }
+        .nav-wrapper { display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; padding: 0 5%; height: 70px; }
+        .logo { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 800; letter-spacing: 2px; color: var(--acer-green); }
+        .nav-links { display: flex; list-style: none; gap: 2.5rem; }
+        .nav-links a { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.95rem; position: relative; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--acer-green); }
+        .search-container { position: relative; }
+        .search-trigger { background: none; border: none; cursor: pointer; color: var(--text-dark); transition: color 0.2s; }
+        .search-trigger:hover { color: var(--acer-green); }
+        .search-dropdown { position: absolute; top: 50px; right: 0; width: 350px; background: var(--white); box-shadow: 0 10px 30px rgba(0,0,0,0.15); border-radius: 8px; padding: 1.5rem; z-index: 100; opacity: 0; visibility: hidden; transform: translateY(-10px); transition: opacity 0.3s, transform 0.3s, visibility 0.3s; }
+        .search-dropdown.visible { opacity: 1; visibility: visible; transform: translateY(0); }
+        .search-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--bg-light); padding-bottom: 1rem; margin-bottom: 1rem; font-weight: bold; color: var(--acer-green); }
+        #close-search { background: none; border: none; cursor: pointer; font-size: 1rem; color: #999; }
+        .search-item { padding: 1rem 0; border-bottom: 1px solid #eee; }
+        .search-item:last-child { border-bottom: none; }
+        .search-item p { font-size: 0.85rem; color: #888; margin-top: 0.3rem; }
+
+        /* HERO  */
+        .quote-carousel { position: relative; height: 500px; background: linear-gradient(135deg, #111 0%, #2a2a2a 100%); color: var(--white); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .carousel-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; opacity: 0; transform: scale(0.98); transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out; }
+        .carousel-slide.slide-active { opacity: 1; transform: scale(1); z-index: 2; }
+        .quote-content { max-width: 800px; text-align: center; padding: 2rem; }
+        .quote-content h2 { font-family: var(--font-heading); font-size: 2.2rem; font-weight: 400; line-height: 1.4; margin-bottom: 2rem; font-style: italic; }
+        .quote-content .author { font-size: 1.1rem; font-weight: 600; color: var(--acer-green); }
+        .carousel-indicators { position: absolute; bottom: 2rem; display: flex; gap: 10px; z-index: 10; }
+        .dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; transition: background 0.3s; }
+        .dot.active { background: var(--acer-green); }
+
+        /* CASE STUDIES TILES */
+        .case-studies-section { padding: 6rem 5%; max-width: 1400px; margin: 0 auto; }
+        .section-title { font-family: var(--font-heading); font-size: 2.5rem; text-align: center; margin-bottom: 4rem; color: var(--text-dark); }
+        .tiles-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem; }
+        .tile { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; display: flex; flex-direction: column; }
+        .tile:hover { transform: translateY(-8px); box-shadow: 0 12px 30px rgba(0,0,0,0.1); }
+        .tile-image { height: 250px; background-color: #fff; }
+        
+        .bg-siemens {
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Siemens-logo.svg/1024px-Siemens-logo.svg.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .bg-dubai {
+            background-image: url('https://upload.wikimedia.org/wikipedia/en/thumb/e/ef/Dubai_Healthcare_City_logo.svg/1200px-Dubai_Healthcare_City_logo.svg.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .tile-content { padding: 2rem; text-align: center; flex-grow: 1; display: flex; flex-direction: column; justify-content: center; }
+        .tile-content h2 { font-family: var(--font-heading); font-size: 1.4rem; color: var(--text-dark); margin-bottom: 1.5rem; }
+        .read-more { font-weight: 700; color: var(--acer-green); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; }
+
+        /* MODALS */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.4s, visibility 0.4s; z-index: 2000; }
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+        .modal-box { background: var(--white); width: 90%; max-width: 800px; max-height: 85vh; border-radius: 12px; overflow-y: auto; position: relative; transform: translateY(30px); transition: transform 0.4s; box-shadow: 0 25px 50px rgba(0,0,0,0.3); }
+        .modal-overlay.active .modal-box { transform: translateY(0); }
+        .close-modal { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 2rem; cursor: pointer; color: #888; transition: color 0.2s; line-height: 1; }
+        .close-modal:hover { color: #111; }
+        .modal-header { background: var(--bg-light); padding: 3rem 2.5rem; border-bottom: 1px solid #ddd; }
+        .modal-header h2 { font-family: var(--font-heading); font-size: 2rem; color: var(--text-dark); }
+        .modal-body { padding: 3rem 2.5rem; }
+        .modal-body p { margin-bottom: 1.2rem; font-size: 1.1rem; color: var(--text-light); }
+        .story-list { margin: 1.5rem 0 1.5rem 2rem; font-size: 1.1rem; color: var(--text-light); }
+        .story-list li { margin-bottom: 0.5rem; }
+        .moral-box { margin-top: 3rem; padding: 1.5rem; background: rgba(127, 180, 50, 0.1); border-left: 5px solid var(--acer-green); font-size: 1.15rem; color: var(--text-dark); border-radius: 0 8px 8px 0; }
+        .acer-footer { background: #111; color: #666; text-align: center; padding: 3rem 1rem; margin-top: 0; }
+
+        /* COMPLAINT PROCESS */
+        .process-section { padding: 6rem 5%; background: var(--bg-light); text-align: center; }
+        .process-header { margin-bottom: 4rem; }
+        .process-title { font-family: var(--font-heading); font-size: 2.5rem; color: var(--text-dark); margin-bottom: 1rem; text-transform: uppercase; letter-spacing: 1px; }
+        .process-subtitle { font-size: 1.1rem; color: var(--text-light); max-width: 600px; margin: 0 auto; }
+        
+        .process-container { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1rem; max-width: 1200px; margin: 0 auto; }
+        .process-step { background: var(--white); padding: 1.2rem 1.8rem; border-radius: 50px; font-weight: 700; color: var(--text-dark); box-shadow: 0 4px 15px rgba(0,0,0,0.06); transition: all 0.3s ease; display: flex; align-items: center; gap: 0.8rem; cursor: default; border: 2px solid transparent; }
+        .process-step:hover { transform: translateY(-5px) scale(1.05); background: var(--acer-green); color: var(--white); box-shadow: 0 8px 25px rgba(127, 180, 50, 0.4); border-color: rgba(255,255,255,0.5); }
+        .process-step:hover span { transform: scale(1.2); }
+        .process-step span { transition: transform 0.3s ease; font-size: 1.4rem; }
+        
+        .process-arrow { color: var(--acer-green); font-size: 1.8rem; font-weight: bold; }
+        .process-arrow-icon { display: inline-block; animation: pulseRight 2s infinite; }
+        @keyframes pulseRight { 0% { transform: translateX(-3px); opacity: 0.5; } 50% { transform: translateX(3px); opacity: 1; } 100% { transform: translateX(-3px); opacity: 0.5; } }
+        @keyframes pulseDown { 0% { transform: rotate(90deg) translateY(-3px); opacity: 0.5; } 50% { transform: rotate(90deg) translateY(3px); opacity: 1; } 100% { transform: rotate(90deg) translateY(-3px); opacity: 0.5; } }
+
+        /* MODERN TRENDS */
+        .trends-section { padding: 6rem 5%; background: var(--white); text-align: center; }
+        .trends-title { font-family: var(--font-heading); font-size: 2.5rem; color: var(--text-dark); margin-bottom: 4rem; text-transform: uppercase; letter-spacing: 1px; }
+        .trends-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2.5rem; max-width: 1200px; margin: 0 auto; }
+        
+        .trend-card { background: var(--bg-light); border-radius: 24px; padding: 2.5rem 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.03); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; cursor: pointer; text-align: left; z-index: 1; display: flex; flex-direction: column; align-items: flex-start; }
+        .trend-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--acer-green) 0%, #5c8524 100%); z-index: -1; opacity: 0; transition: opacity 0.4s ease; }
+        
+        .trend-card:hover { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(0,0,0,0.15); }
+        .trend-card:hover::before { opacity: 1; }
+        
+        .trend-icon { font-size: 3rem; margin-bottom: 1.5rem; display: inline-block; transition: all 0.4s ease; transform-origin: left; font-family: 'Segoe UI Emoji', sans-serif; }
+        .trend-card:hover .trend-icon { transform: scale(1.2); filter: grayscale(1) brightness(100); }
+        
+        .trend-card h3 { font-family: var(--font-heading); font-size: 1.4rem; margin-bottom: 1rem; color: var(--text-dark); transition: color 0.4s ease; font-weight: 800; }
+        .trend-card:hover h3 { color: var(--white); }
+        
+        .trend-card p { color: var(--text-light); font-size: 1.05rem; line-height: 1.6; transition: color 0.4s ease; }
+        .trend-card:hover p { color: rgba(255,255,255,0.9); }
+
+        @media (max-width: 900px) {
+            .process-container { flex-direction: column; }
+            .process-arrow-icon { animation: pulseDown 2s infinite; display: inline-block; transform: rotate(90deg); }
+        }
+
+        /* ACER LOGO BG */
+        .bg-acer {
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Acer_2011.svg/1024px-Acer_2011.svg.png');
+            background-size: 60%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* BUBBLE DESIGN MODAL */
+        .bubble-modal-overlay { background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); }
+        .bubble-modal-box { background: linear-gradient(135deg, #111, #2c3e23); border: 1px solid rgba(255,255,255,0.1); width: 90%; max-width: 900px; max-height: 85vh; border-radius: 30px; overflow-y: auto; position: relative; transform: scale(0.8); opacity: 0; transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 30px 60px rgba(0,0,0,0.5); padding: 2rem; color: #fff; }
+        .modal-overlay.active .bubble-modal-box { transform: scale(1); opacity: 1; }
+        
+        .bubble-modal-box .close-modal { color: #fff; top: 1.5rem; right: 2rem; font-size: 2.5rem; z-index: 10; }
+        .bubble-modal-box .close-modal:hover { color: var(--acer-green); }
+        
+        .bubble-header { text-align: center; margin-bottom: 2rem; padding-top: 1rem; }
+        .bubble-header h2 { font-family: var(--font-heading); font-size: 2.5rem; color: var(--acer-green); margin-bottom: 0.5rem; text-shadow: 0 2px 10px rgba(127,180,50,0.3); font-weight: 800; }
+        .bubble-header p { font-size: 1.2rem; color: rgba(255,255,255,0.8); font-style: italic; }
+        
+        .bubble-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        .bubble-card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-radius: 25px; padding: 2rem; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3); text-align: left; transition: transform 0.3s; }
+        .bubble-card:hover { transform: translateY(-5px); border-color: rgba(127, 180, 50, 0.4); }
+        
+        .bubble-card h3 { font-family: var(--font-heading); font-size: 1.4rem; color: var(--acer-green); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.8rem; font-weight: 700; }
+        .bubble-card p { font-size: 1.05rem; line-height: 1.6; margin-bottom: 1rem; color: rgba(255,255,255,0.9); }
+        .bubble-card ul { margin-left: 1.5rem; font-size: 1.05rem; line-height: 1.6; color: rgba(255,255,255,0.9); }
+        .bubble-card li { margin-bottom: 0.5rem; }
+        
+        .bubble-moral { background: linear-gradient(135deg, rgba(127, 180, 50, 0.2), rgba(127, 180, 50, 0.05)); border: 1px solid rgba(127, 180, 50, 0.3); text-align: center; padding: 2rem; margin-top: 2rem; border-radius: 25px; font-size: 1.3rem; font-weight: bold; color: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .bubble-moral strong { color: var(--acer-green); }
+
+        /* OBJECTIVES SECTION */
+        .objectives-section { padding: 8rem 5%; background: #0a0a0a; color: #fff; text-align: center; }
+        .objectives-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; max-width: 1200px; margin: 4rem auto 0; }
+        .obj-card { background: rgba(255,255,255,0.05); padding: 2.5rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); transition: transform 0.3s, box-shadow 0.3s; text-align: left; }
+        .obj-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(127, 180, 50, 0.2); border-color: var(--acer-green); }
+        .obj-card h3 { color: var(--acer-green); margin-bottom: 1rem; font-family: var(--font-heading); }
+        .obj-card p { font-size: 0.95rem; color: #ccc; line-height: 1.6; }
+
+        /* KEY COMPONENTS - SILVER THEME */
+        .components-section { padding: 8rem 5%; background: #e0e0e0; text-align: center; position: relative; }
+        .comp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; max-width: 1200px; margin: 4rem auto 0; }
+        .comp-card { 
+            background: linear-gradient(145deg, #ffffff, #d1d1d1); 
+            padding: 3rem 2rem; 
+            border-radius: 30px; 
+            box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+            transition: all 0.5s ease;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        .comp-card.animate {
+            animation: silverLockIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+        @keyframes silverLockIn {
+            0% { opacity: 0; transform: scale(0.5) rotate(-10deg); filter: blur(10px); }
+            100% { opacity: 1; transform: scale(1) rotate(0); filter: blur(0); }
+        }
+        .comp-card h3 { font-family: var(--font-heading); color: #444; margin-bottom: 1rem; border-bottom: 2px solid #aaa; padding-bottom: 0.5rem; }
+        .comp-card ul { list-style: none; text-align: left; }
+        .comp-card li { margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative; color: #555; }
+        .comp-card li::before { content: '◈'; position: absolute; left: 0; color: #777; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Acer Style Navigation -->
+    <nav class="acer-nav">
+        <div class="nav-wrapper">
+            <div class="logo">
+                ZORO NORO
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="#">Products</a></li>
+                <li><a href="#">Customer Complaint Management</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Support</a></li>
+            </ul>
+
+            <div class="search-container">
+                <button id="search-btn" class="search-trigger">
+                    <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                </button>
+                <div id="dummy-search-results" class="search-dropdown hidden">
+                    <div class="search-header">
+                        <span>Relevant to CRM Results...</span>
+                        <button id="close-search">X</button>
+                    </div>
+                    <div class="search-item">
+                        <strong>Analytic Forecasting</strong>
+                        <p>Currently disabled. Core CRM systems tracking...</p>
+                    </div>
+                    <div class="search-item">
+                        <strong>Engagement Metrics</strong>
+                        <p>Unable to retrieve real-time data integration at this moment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Automated Fading Quote Carousel) -->
+    <section class="quote-carousel">
+        <div class="carousel-slide slide-active">
+            <div class="quote-content">
+                <h2>“People often say that motivation doesn’t last. Well, neither does bathing, that’s why we recommend it daily.”</h2>
+                <p class="author">– Zig Ziglar</p>
+            </div>
+        </div>
+        <div class="carousel-slide">
+            <div class="quote-content">
+                <h2>“You don’t close a sale, you open a relationship if you want to build a long-term, successful enterprise.”</h2>
+                <p class="author">– Patricia Fripp</p>
+            </div>
+        </div>
+        <div class="carousel-slide">
+            <div class="quote-content">
+                <h2>“If you torture the data enough, they will confess.”</h2>
+                <p class="author">– Ronald H. Coase, Nobel Prize Laureate in Economic Science <em>(submitted by Jessica Fish)</em></p>
+            </div>
+        </div>
+
+        <div class="carousel-indicators">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </section>
+
+    <!-- Case Studies Section -->
+    <section class="case-studies-section">
+        <h1 class="section-title">CRM CASE STUDIES</h1>
+        
+        <div class="tiles-grid">
+            <!-- TILE 1 -->
+            <div class="tile" onclick="openModal('siemens')">
+                <div class="tile-image bg-siemens"></div>
+                <div class="tile-content">
+                    <h2>SIEMENS - UNIFIED SALES</h2>
+                    <span class="read-more">Read Story ></span>
+                </div>
+            </div>
+
+            <!-- TILE 2 -->
+            <div class="tile" onclick="openModal('dubai')">
+                <div class="tile-image bg-dubai"></div>
+                <div class="tile-content">
+                    <h2>Dubai Healthcare City – Finding Order in the Chaos</h2>
+                    <span class="read-more">Read Story ></span>
+                </div>
+            </div>
+
+            <!-- TILE 3 -->
+            <div class="tile" onclick="openModal('acer')">
+                <div class="tile-image bg-acer"></div>
+                <div class="tile-content">
+                    <h2>ACER INC. - THE DELAYED LAPTOP</h2>
+                    <span class="read-more">Read Story ></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODALS for Stories -->
+    
+    <!-- Siemens Modal -->
+    <div id="siemens-modal" class="modal-overlay bubble-modal-overlay">
+        <div class="bubble-modal-box">
+            <span class="close-modal" onclick="closeModal('siemens')">&times;</span>
+            <div class="bubble-header">
+                <h2>SIEMENS - UNIFIED SALES</h2>
+                <p>Connecting 18,000 Representatives Worldwide</p>
+            </div>
+            
+            <div class="bubble-grid">
+                <div class="bubble-card">
+                    <p>Imagine managing a sales team of over 18,000 people across the world. That was the reality for Siemens.</p>
+                    <p>Leads were coming in from everywhere—but no one knew who was handling what. Some customers waited days for a reply. Others were ignored completely.</p>
+                    <p>It was messy.</p>
+                </div>
+                <div class="bubble-card">
+                    <h3>🔄 The Turning Point</h3>
+                    <p>Siemens decided to fix it by implementing Salesforce as their central CRM system. Suddenly, everything changed.</p>
+                </div>
+                <div class="bubble-card">
+                    <h3>⚙️ What Changed?</h3>
+                    <ul>
+                        <li>All sales data was consolidated in one place</li>
+                        <li>Leads were automatically assigned seamlessly</li>
+                        <li>Teams were empowered to see exactly what happened in real time</li>
+                    </ul>
+                </div>
+                <div class="bubble-card">
+                    <h3>🎯 The Result</h3>
+                    <p>What followed their integration?</p>
+                    <ul>
+                        <li>Wait times dropped drastically from days to mere minutes</li>
+                        <li>Teams worked together instead of competing blindly</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bubble-moral">
+                👉 <strong>Moral of the story:</strong> When everyone works from the same system, speed and clarity improve instantly.
+            </div>
+        </div>
+    </div>
+
+    <!-- Dubai Modal -->
+    <div id="dubai-modal" class="modal-overlay bubble-modal-overlay">
+        <div class="bubble-modal-box">
+            <span class="close-modal" onclick="closeModal('dubai')">&times;</span>
+            <div class="bubble-header">
+                <h2>Dubai Healthcare City</h2>
+                <p>Finding Order in the Chaos</p>
+            </div>
+            
+            <div class="bubble-grid">
+                <div class="bubble-card">
+                    <p>At Dubai Healthcare City, communication was scattered.</p>
+                    <p>Important data lived in emails, spreadsheets, and random files. Departments struggled to stay aligned.</p>
+                    <p>It felt like everyone was working—but not together.</p>
+                </div>
+                <div class="bubble-card">
+                    <h3>🔄 The Turning Point</h3>
+                    <p>They realized the chaotic workflow needed immediate revamping. So they introduced a centralized CRM system.</p>
+                </div>
+                <div class="bubble-card">
+                    <h3>⚙️ What Changed?</h3>
+                    <p>Now, every detail is systematically recorded:</p>
+                    <ul>
+                        <li>Every interaction logged</li>
+                        <li>Every partner detail organized</li>
+                        <li>Every update stored in one centralized place</li>
+                    </ul>
+                </div>
+                <div class="bubble-card">
+                    <h3>🎯 The Result</h3>
+                    <p>The transformation was sudden and profound:</p>
+                    <ul>
+                        <li>Teams were unified and aligned flawlessly</li>
+                        <li>Decisions became faster</li>
+                        <li>Confusion disappeared</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="bubble-moral">
+                👉 <strong>Moral of the story:</strong> CRM turns scattered information into structured intelligence.
+            </div>
+        </div>
+    </div>
+    <!-- Acer Transparent Bubble Modal -->
+    <div id="acer-modal" class="modal-overlay bubble-modal-overlay">
+        <div class="bubble-modal-box">
+            <span class="close-modal" onclick="closeModal('acer')">&times;</span>
+            <div class="bubble-header">
+                <h2>Acer Inc. – The Delayed Laptop</h2>
+                <p>A Journey from Frustration to Instant Support</p>
+            </div>
+            <div class="bubble-grid">
+                <div class="bubble-card">
+                    <p>Ravi had just bought a new Acer laptop for his college work. Everything was smooth—until one day, the screen suddenly stopped working.</p>
+                    <p>Frustrated, he went to the service center. They told him, “We’ll check and get back to you.”</p>
+                    <p>Days passed. No update. Ravi had no idea:</p>
+                    <ul>
+                        <li>Where his laptop was</li>
+                        <li>What the problem was</li>
+                        <li>When it would be fixed</li>
+                    </ul>
+                </div>
+                <div class="bubble-card">
+                    <h3>🔄 The Turning Point</h3>
+                    <p>Acer realized many customers were facing the same issue—lack of communication and delays.</p>
+                    <p>So, they introduced a central complaint management system.</p>
+                </div>
+                <div class="bubble-card">
+                    <h3>⚙️ What Changed?</h3>
+                    <p>Now when Ravi raises a complaint:</p>
+                    <ul>
+                        <li>He gets a ticket ID instantly</li>
+                        <li>His request is sent to the nearest service center</li>
+                        <li>He receives real-time updates via SMS/email</li>
+                        <li>Technicians use diagnostic tools to fix issues faster</li>
+                    </ul>
+                </div>
+                <div class="bubble-card">
+                    <h3>🎯 The Result</h3>
+                    <p>Next time Ravi had an issue:</p>
+                    <ul>
+                        <li>He could track everything</li>
+                        <li>His laptop was fixed faster</li>
+                        <li>He felt more confident in the brand</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bubble-moral">
+                👉 <strong>Moral of the story:</strong> Acer didn’t just fix laptops—they fixed customer trust.
+            </div>
+        </div>
+    </div>
+    
+    
+
+    
+
+    <!-- Complaint Process Section -->
+    <section class="process-section">
+        <div class="process-header">
+            <h2 class="process-title">Customer Complaint Management</h2>
+            <p class="process-subtitle">Understanding the modern approach to turning challenges into opportunities and improving customer loyalty.</p>
+        </div>
+        <div class="process-container">
+            <div class="process-step"><span>🧑‍💼</span> Customer</div>
+            <div class="process-arrow"><span class="process-arrow-icon">➔</span></div>
+            <div class="process-step"><span>📝</span> Complaint</div>
+            <div class="process-arrow"><span class="process-arrow-icon">➔</span></div>
+            <div class="process-step"><span>🎫</span> Ticket</div>
+            <div class="process-arrow"><span class="process-arrow-icon">➔</span></div>
+            <div class="process-step"><span>🎯</span> Assignment</div>
+            <div class="process-arrow"><span class="process-arrow-icon">➔</span></div>
+            <div class="process-step"><span>✅</span> Resolution</div>
+            <div class="process-arrow"><span class="process-arrow-icon">➔</span></div>
+            <div class="process-step"><span>⭐</span> Feedback</div>
+            <div class="process-arrow"><span class="process-arrow-icon">➔</span></div>
+            <div class="process-step"><span>📈</span> Improvement</div>
+        </div>
+    </section>
+
+    <!-- Modern Trends Section -->
+    <section class="trends-section">
+        <h2 class="trends-title">Modern Trends in Complaint Management</h2>
+        <div class="trends-grid">
+            <div class="trend-card">
+                <div class="trend-icon">🤖</div>
+                <h3>AI Chatbots</h3>
+                <p>Deploy AI-driven assistants for instant replies and 24/7 preliminary support, drastically reducing customer wait times.</p>
+            </div>
+            <div class="trend-card">
+                <div class="trend-icon">📊</div>
+                <h3>Data Analytics</h3>
+                <p>Extract actionable insights from every interaction to anticipate real issues and personalize proactive customer care.</p>
+            </div>
+            <div class="trend-card">
+                <div class="trend-icon">📱</div>
+                <h3>Omnichannel Support</h3>
+                <p>Seamlessly transition between WhatsApp, social media, and web, offering a unified and uninterrupted customer experience.</p>
+            </div>
+            <div class="trend-card">
+                <div class="trend-icon">⚡</div>
+                <h3>Automated Tickets</h3>
+                <p>Intelligent routing and automated ticketing systems that ensure every reported issue reaches the right expert instantly.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CRM Objectives Section -->
+    <section class="objectives-section">
+        <h2 class="section-title" style="color: white;">Objectives of CRM</h2>
+        <div class="objectives-grid">
+            <div class="obj-card">
+                <h3>Build Strong Relationships</h3>
+                <p>Move beyond transactions to genuine partnerships. By understanding every touchpoint, we create bonds that stand the test of time, ensuring customers feel seen, heard, and valued at every stage of their journey with us.</p>
+            </div>
+            <div class="obj-card">
+                <h3>Improve Satisfaction</h3>
+                <p>Deliver frictionless experiences that delight. Proactive problem-solving and rapid response times transform standard service into exceptional support, keeping your brand at the top of their mind for all the right reasons.</p>
+            </div>
+            <div class="obj-card">
+                <h3>Increase Retention</h3>
+                <p>Keep your best customers coming back. It's five times more expensive to acquire a new customer than to keep an existing one; CRM gives you the tools to loyalty-proof your business through personalized engagement.</p>
+            </div>
+            <div class="obj-card">
+                <h3>Boost Profitability</h3>
+                <p>Convert data into dollars. Targeted marketing and efficient sales pipelines ensure that resources are invested where they matter most, maximizing lifetime value and driving sustainable revenue growth across the board.</p>
+            </div>
+            <div class="obj-card">
+                <h3>Personalized Experiences</h3>
+                <p>Make every interaction count. In a world of digital noise, hyper-personalization is the ultimate differentiator. Tailor your message, your offers, and your support to the unique profile of every individual user.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Components of CRM Section -->
+    <section class="components-section">
+        <h2 class="section-title">Key Components of CRM</h2>
+        <div class="comp-grid">
+            <div class="comp-card">
+                <h3>1. Operational CRM</h3>
+                <ul>
+                    <li>Handles daily customer interactions with precision.</li>
+                    <li>Includes streamlined sales automation and marketing workflows.</li>
+                    <li>Integrates service processes to ensure consistent delivery.</li>
+                </ul>
+            </div>
+            <div class="comp-card">
+                <h3>2. Analytical CRM</h3>
+                <ul>
+                    <li>Deeply analyzes customer data to uncover hidden patterns.</li>
+                    <li>Helps understand complex behaviors and future trends.</li>
+                    <li>Provides the intelligence needed for data-driven decision making.</li>
+                </ul>
+            </div>
+            <div class="comp-card">
+                <h3>3. Collaborative CRM</h3>
+                <ul>
+                    <li>Shares vital customer info seamlessly across departments.</li>
+                    <li>Ensures smooth, jargon-free communication between teams.</li>
+                    <li>Breaks down silos to create a unified customer experience.</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="acer-footer">
+        <p>&copy; 2026 ZORO NORO Corporation. All Rights Reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchBtn = document.getElementById('search-btn');
+            const searchDropdown = document.getElementById('dummy-search-results');
+            const closeSearch = document.getElementById('close-search');
+
+            searchBtn.addEventListener('click', () => { searchDropdown.classList.toggle('visible'); });
+            closeSearch.addEventListener('click', () => { searchDropdown.classList.remove('visible'); });
+
+            const slides = document.querySelectorAll('.carousel-slide');
+            const dots = document.querySelectorAll('.dot');
+            let currentSlide = 0;
+            const slideIntervalMs = 6000; 
+
+            const goToSlide = (index) => {
+                slides[currentSlide].classList.remove('slide-active');
+                dots[currentSlide].classList.remove('active');
+                currentSlide = index;
+                slides[currentSlide].classList.add('slide-active');
+                dots[currentSlide].classList.add('active');
+            };
+
+            const nextSlide = () => {
+                let newIndex = currentSlide + 1;
+                if (newIndex >= slides.length) newIndex = 0;
+                goToSlide(newIndex);
+            };
+
+            let slideTimer = setInterval(nextSlide, slideIntervalMs);
+
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    clearInterval(slideTimer);
+                    goToSlide(index);
+                    slideTimer = setInterval(nextSlide, slideIntervalMs);
+                });
+            });
+        });
+
+        function openModal(id) {
+            const modal = document.getElementById(`${id}-modal`);
+            if(modal) { modal.classList.add('active'); document.body.style.overflow = 'hidden'; }
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(`${id}-modal`);
+            if(modal) { modal.classList.remove('active'); document.body.style.overflow = ''; }
+        }
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) { overlay.classList.remove('active'); document.body.style.overflow = ''; }
+            });
+        });
+
+        // Intersection Observer for Component Animations
+        const observerOptions = { threshold: 0.2 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.querySelectorAll('.comp-card').forEach(card => card.classList.add('animate'));
+                }
+            });
+        }, observerOptions);
+
+        const componentsSection = document.querySelector('.components-section');
+        if (componentsSection) observer.observe(componentsSection);
+
+    </script>
+</body>
+</html>
